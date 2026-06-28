@@ -2,10 +2,10 @@
   "name": "guessing-game",
   "version": "1.0.0",
   "description": "Live multiplayer guessing game",
-  "main": "server/index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node server/index.js",
-    "dev": "node server/index.js"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "dependencies": {
     "cors": "^2.8.6",
