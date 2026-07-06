@@ -1,0 +1,17 @@
+.question-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,.1);
+}
+
+.question-card h3 {
+    color: #2563eb;
+    margin-bottom: 10px;
+}
+
+.question-card p {
+    font-size: 18px;
+    line-height: 1.6;
+}

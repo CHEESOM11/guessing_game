@@ -1,0 +1,25 @@
+.guess-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.guess-form input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.guess-form button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+}
+
+.guess-form button:hover {
+    background: #1d4ed8;
+}

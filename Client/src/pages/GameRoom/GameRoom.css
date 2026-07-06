@@ -1,0 +1,31 @@
+.game-room {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 25px;
+}
+
+.game-room h2 {
+    text-align: center;
+    color: #2563eb;
+    margin-bottom: 30px;
+}
+
+.winner {
+    margin-top: 20px;
+    background: #22c55e;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.answer {
+    margin-top: 15px;
+    background: #facc15;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+}

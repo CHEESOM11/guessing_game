@@ -1,0 +1,23 @@
+.score-board {
+    background: white;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,.1);
+}
+
+.score-board h3 {
+    color: #2563eb;
+    margin-bottom: 15px;
+}
+
+.score-board div {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.score-board div:last-child {
+    border-bottom: none;
+}

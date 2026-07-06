@@ -1,0 +1,47 @@
+.modal-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.6);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.winner-modal{
+
+    background:white;
+
+    width:350px;
+
+    padding:30px;
+
+    border-radius:15px;
+
+    text-align:center;
+
+}
+
+.winner-modal button{
+
+    margin-top:20px;
+
+    padding:12px;
+
+    width:100%;
+
+    border:none;
+
+    background:#2563eb;
+
+    color:white;
+
+    border-radius:8px;
+
+}
