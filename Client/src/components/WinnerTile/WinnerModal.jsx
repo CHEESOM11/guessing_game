@@ -1,4 +1,4 @@
-import "./WinnerModal.css";
+import "../WinnerTile/WinnerTile.css";
 
 export default function WinnerModal({
 

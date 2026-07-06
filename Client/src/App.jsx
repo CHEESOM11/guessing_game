@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
-import Home from "./pages/Home";
-import GameRoom from "./pages/GameRoom";
+import Home from "./pages/Home/Home";
+import GameRoom from "./pages/GameRoom/GameRoom";
 
 function App() {
     return (
