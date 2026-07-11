@@ -20,7 +20,7 @@ export default function GuessForm({
 
             sessionId,
             username,
-            guess
+            answer: guess
 
         });
 

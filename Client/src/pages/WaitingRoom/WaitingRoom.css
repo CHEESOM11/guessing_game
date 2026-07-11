@@ -1,0 +1,141 @@
+.waiting-room{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#0f172a;
+
+}
+
+.waiting-card{
+
+    width:500px;
+
+    background:#1e293b;
+
+    padding:35px;
+
+    border-radius:20px;
+
+    color:white;
+
+    text-align:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+
+}
+
+.waiting-card h1{
+
+    margin-bottom:10px;
+
+}
+
+.waiting-card h3{
+
+    color:#cbd5e1;
+
+    margin-bottom:25px;
+
+}
+
+.session-box{
+
+    background:#334155;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    margin-bottom:20px;
+
+}
+
+.session-box h2{
+
+    margin-top:8px;
+
+    color:#38bdf8;
+
+    letter-spacing:3px;
+
+}
+
+.player-count{
+
+    margin-bottom:20px;
+
+    font-size:18px;
+
+}
+
+.player-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+    margin-bottom:20px;
+
+}
+
+.player{
+
+    background:#475569;
+
+    padding:12px;
+
+    border-radius:8px;
+
+    font-size:17px;
+
+}
+
+.waiting-message{
+
+    color:#facc15;
+
+    margin-bottom:20px;
+
+}
+
+.waiting-card button{
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+}
+
+.waiting-card button:disabled{
+
+    background:#64748b;
+
+    cursor:not-allowed;
+
+}
+
+.waiting-card button:hover:not(:disabled){
+
+    background:#1d4ed8;
+
+}

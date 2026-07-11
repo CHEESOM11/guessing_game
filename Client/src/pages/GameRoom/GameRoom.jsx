@@ -29,7 +29,7 @@ export default function GameRoom() {
 
         socket.on("playersUpdated", (updatedPlayers) => {
 
-            setPlayers(updatedPlayers);
+            setPlayers(updatedPlayers.players ?? updatedPlayers);
 
         });
 
@@ -55,7 +55,7 @@ export default function GameRoom() {
 
         });
 
-        socket.on("gameEnded", (data) => {
+        socket.on("timeUp", (data) => {
 
             setWinner(null);
             setAnswer(data.answer);
@@ -70,7 +70,7 @@ export default function GameRoom() {
             socket.off("gameStarted");
             socket.off("timerUpdate");
             socket.off("winnerDeclared");
-            socket.off("gameEnded");
+            socket.off("timeUp");
 
         };
 

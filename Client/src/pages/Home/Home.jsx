@@ -20,7 +20,7 @@ function Home() {
 
     setLoading(true);
 
-    socket.emit("createSession", username.trim());
+    socket.emit("createSession", username);
   };
 
   const joinSession = () => {
@@ -38,29 +38,33 @@ function Home() {
 
     socket.emit("joinSession", {
       username: username.trim(),
-      sessionCode: sessionId.trim().toUpperCase(),
+      sessionId: sessionId.trim().toUpperCase(),
     });
   };
 
   useEffect(() => {
-    socket.on("sessionCreated", (session) => {
+    socket.on("sessionCreated", (data) => {
       setLoading(false);
 
-      navigate("/game", {
+      navigate("/waiting", {
         state: {
-          session,
-          username,
+          sessionId: data.sessionId,
+          username: username,
+          gameMaster: data.gameMaster,
+          players: data.players,
         },
       });
     });
 
-    socket.on("playersUpdated", () => {
+    socket.on("sessionJoined", (data) => {
       setLoading(false);
 
-      navigate("/game", {
+      navigate("/waiting", {
         state: {
-          sessionId,
-          username,
+          sessionId: data.sessionId,
+          username: username,
+          gameMaster: data.gameMaster,
+          players: data.players,
         },
       });
     });
@@ -72,7 +76,7 @@ function Home() {
 
     return () => {
       socket.off("sessionCreated");
-      socket.off("playersUpdated");
+      socket.off("sessionJoined");
       socket.off("errorMessage");
     };
   }, [navigate, username, sessionId]);
@@ -116,7 +120,7 @@ function Home() {
           onClick={createSession}
           disabled={loading}
         >
-          Create Session
+          {loading ? "Creating..." : "Create Session"}
         </button>
 
         <button
@@ -124,7 +128,7 @@ function Home() {
           disabled={loading}
           className="join"
         >
-          Join Session
+          {loading ? "Joining..." : "Join Session"}
         </button>
 
       </div>

@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
 import Home from "./pages/Home/Home";
+import WaitingRoom from "./pages/WaitingRoom/WaitingRoom";
 import GameRoom from "./pages/GameRoom/GameRoom";
 
 function App() {
@@ -11,7 +12,12 @@ function App() {
                 path="/"
                 element={<Home />}
             />
-
+              
+            <Route
+                path="/"
+                element={<WaitingRoom />}
+            />
+            
             <Route
                 path="/game"
                 element={<GameRoom />}

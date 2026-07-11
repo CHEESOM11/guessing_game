@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 const GAME_TIME_LIMIT = 60;
 const activeTimers = new Map();
 
+//Stop and remove an active timer
 function clearGameTimer(sessionId) {
     const timer = activeTimers.get(sessionId);
     if (timer) {
@@ -12,19 +13,19 @@ function clearGameTimer(sessionId) {
         activeTimers.delete(sessionId);
     }
 }
-
+// Start countdown
 function startGameTimer(io, sessionId) {
     clearGameTimer(sessionId);
 
     let timeLeft = GAME_TIME_LIMIT;
 
-    io.to(sessionId).emit('timerTick', { timeLeft });
+    io.to(sessionId).emit('timerUpdate', { timeLeft });
 
     const intervalId = setInterval(async () => {
         timeLeft -= 1;
 
         if (timeLeft > 0) {
-            io.to(sessionId).emit('timerTick', { timeLeft });
+            io.to(sessionId).emit('timerUpdate', { timeLeft });
             return;
         }
 
@@ -35,7 +36,9 @@ function startGameTimer(io, sessionId) {
             currentSession.status = 'ended';
             await currentSession.save();
             io.to(sessionId).emit('timeUp', {
+                winner: null,
                 answer: currentSession.answer,
+                scores: currentSession.players,
             });
         }
     }, 1000);
@@ -53,14 +56,19 @@ module.exports = (io) => {
                 .slice(0, 6)
                 .toUpperCase();
 
+            const trimmedUsername = username.trim();
             const session = await Session.create({
                 sessionId,
                 gameMaster: socket.id,
-                players: [{ socketId: socket.id, username, score: 0 }],
+                players: [{ socketId: socket.id, username: trimmedUsername, score: 0 }],
                 status: 'waiting',
             });
             socket.join(sessionId);
-            io.to(sessionId).emit('sessionCreated', session);
+            io.to(sessionId).emit('sessionCreated', {
+                sessionId: session.sessionId,
+                gameMaster: trimmedUsername,
+                players: session.players,
+            });
         });
 
         // Join a session
@@ -88,9 +96,22 @@ module.exports = (io) => {
             session.players.push({ socketId: socket.id, username, score: 0, attempts: 3 });
             await session.save();
 
+            const gameMasterPlayer = session.players.find(
+                player => player.socketId === session.gameMaster
+            );
+            const gameMasterUsername = gameMasterPlayer?.username || '';
+
             socket.join(sessionId);
-            socket.emit('sessionJoined', session);
+            socket.emit('sessionJoined', {
+                sessionId: session.sessionId,
+                gameMaster: gameMasterUsername,
+                players: session.players,
+            });
             io.to(sessionId).emit('playerJoined', { username });
+            io.to(sessionId).emit('playersUpdated', {
+                players: session.players,
+                gameMaster: gameMasterUsername,
+            });
         });
 
         // Create a question
@@ -161,24 +182,29 @@ module.exports = (io) => {
                 const session = await Session.findOne({ 'players.socketId': socket.id });
                 if (!session) return;
 
-                if (session.status === 'active') {
-                    session.players = session.players.filter(player => player.socketId !== socket.id);
+                const leavingPlayer = session.players.find(player => player.socketId === socket.id);
+                const leavingUsername = leavingPlayer?.username || socket.id;
 
-                    //IF GAME MASTER LEAVES SOMEONE ELSE IS ASSIGNED
-                    if (session.gameMaster === socket.id && session.players.length > 0) {
-                        session.gameMaster = session.players[0].socketId;
-                        io.to(session.sessionCode).emit('newGameMaster', { gameMaster: session.players[0].username});
-                    }
+                session.players = session.players.filter(player => player.socketId !== socket.id);
 
-                    //SESSION SAVES/DELETES
-                    if (session.players.length === 0) {
-                        await Session.findByIdAndDelete(session._id);
-                        console.log(`Session ${session.sessionId} deleted`);
-                    } else {
-                        await session.save();
-                        io.to(session.sessionId).emit('playerLeft', { username: socket.id });
-                    }
+                const masterLeft = session.gameMaster === socket.id;
+                if (masterLeft && session.players.length > 0) {
+                    session.gameMaster = session.players[0].socketId;
+                    io.to(session.sessionId).emit('newGameMaster', { gameMaster: session.players[0].username });
                 }
+
+                if (session.players.length === 0) {
+                    await Session.findByIdAndDelete(session._id);
+                    console.log(`Session ${session.sessionId} deleted`);
+                } else {
+                    await session.save();
+                    io.to(session.sessionId).emit('playerLeft', { username: leavingUsername });
+                    io.to(session.sessionId).emit('playersUpdated', {
+                        players: session.players,
+                        gameMaster: session.players.find(player => player.socketId === session.gameMaster)?.username || '',
+                    });
+                }
+
                 console.log(`${socket.id} disconnected`);
             } catch (error) {
                 console.error(error);
