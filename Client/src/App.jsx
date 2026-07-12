@@ -14,7 +14,7 @@ function App() {
             />
               
             <Route
-                path="/"
+                path="/waiting"
                 element={<WaitingRoom />}
             />
             
