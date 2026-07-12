@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import socket from "../services/socket";
-
-import "../styles/WaitingRoom.css";
+import socket from "../../services/socket";
+import "./WaitingRoom.css";
 
 export default function WaitingRoom() {
 
