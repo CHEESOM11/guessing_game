@@ -17,7 +17,13 @@ const server = http.createServer(app);
 connectDB();
 
 // 2. Global Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://guessing-game-teal.vercel.app"
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // 3. API Routes
@@ -35,7 +41,11 @@ app.get('*', (req, res) => {
 // 5. Initialize Socket.io
 const io = new Server(server, { 
     cors: { 
-        origin: "*" // Adjust this in production for security if needed
+        origin: [
+            "http://localhost:5173",
+            "https://guessing-game-teal.vercel.app"
+        ],
+        credentials: true
     } 
 });
 
